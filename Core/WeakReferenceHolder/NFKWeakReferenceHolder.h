@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "NFKInterfaceAllocBlocker"
+#import "NFKInterfaceAllocBlocker.h"
 
 /**
  *  @brief Use in order to add an object to a collection without retaining it.

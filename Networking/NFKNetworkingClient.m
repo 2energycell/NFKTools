@@ -74,7 +74,8 @@
             ++index;
         }];
         
-        NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[URLWithQueryString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        NSMutableURLRequest *mutableRequest =
+        [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[URLWithQueryString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]]];
         
         // set HTTP method:
         if (self.HTTPMethod.length) {

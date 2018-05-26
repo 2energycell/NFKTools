@@ -10,6 +10,6 @@
 
 @interface UIImage (NFKResources)
 
-+ (UIImage * _Nullable)resourcesImageNamed:(NSString * _Nonnull)name;
++ (UIImage * _Nullable)resourcesImageNamed:(NSString * _Nonnull)name inResouces:(NSString * _Nonnull)firstTimeInvocationOnlyName;
 
 @end

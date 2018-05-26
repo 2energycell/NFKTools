@@ -13,7 +13,7 @@
 + (NSBundle * _Nullable)resourcesForBundleWithName:(NSString * _Nonnull)firstTimeInvocationOnlyName {
     if (!firstTimeInvocationOnlyName.length) {
         NSLog(@"<nfktools> `resourcesForBundleWithName:` requires a bundle name on the first invocation.");
-        return;
+        return nil;
     }
     
     static NSBundle *sharedNFKResources = nil;

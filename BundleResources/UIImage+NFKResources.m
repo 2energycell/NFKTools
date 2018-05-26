@@ -12,9 +12,9 @@
 
 @implementation UIImage (NFKResources)
 
-+ (UIImage * _Nullable)resourcesImageNamed:(NSString * _Nonnull)name {
++ (UIImage * _Nullable)resourcesImageNamed:(NSString * _Nonnull)name inResouces:(NSString * _Nonnull)firstTimeInvocationOnlyName {
     // loading image directly from file (iOS8+ && without assets catalog):
-    NSBundle *bundle = [NSBundle resources];
+    NSBundle *bundle = [NSBundle resourcesForBundleWithName:firstTimeInvocationOnlyName];
     NSString *filePath = nil;
     UIImage *image = nil;
     

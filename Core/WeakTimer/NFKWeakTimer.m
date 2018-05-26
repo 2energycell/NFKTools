@@ -38,7 +38,7 @@
     NFKWeakTimer *_instance = [[self.class allocWithZone:nil] init];
     
     if (_instance) {
-        _threadID = [NSString stringWithFormat:@"%p", NSThread.currentThread];
+        _instance.threadID = [NSString stringWithFormat:@"%p", NSThread.currentThread];
         _instance.target = aTarget;
         _instance.selector = aSelector;
         _instance.userInfo = userInfo;
@@ -65,7 +65,9 @@
         
         if (methodSignature.numberOfArguments >= defaultNumberOfArguments) {
             if (methodSignature.numberOfArguments == numberOfArgumentsWithSelf) {
-                [invocation setArgument:&self atIndex:defaultNumberOfArguments];
+                __weak NFKWeakTimer *refToSelf = self;
+                
+                [invocation setArgument:&refToSelf atIndex:defaultNumberOfArguments];
             }
             
             if (target && selector) {
@@ -86,7 +88,7 @@
 }
 
 - (void)invalidate {
-    if ([_threadID isEqualToString:NSThread.currentThread]) {
+    if ([_threadID isEqualToString:[NSString stringWithFormat:@"%p", NSThread.currentThread]]) {
         if (_timer.isValid) {
             [_timer invalidate];
         }
