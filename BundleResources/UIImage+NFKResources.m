@@ -19,14 +19,14 @@
     UIImage *image = nil;
     
     if (bundle && imageName.length) {
-        filePath = [[bundle resourcePath] stringByAppendingPathComponent:imageName];
+        filePath = [bundle.resourcePath stringByAppendingPathComponent:imageName];
     }
     
     if (filePath.length) {
         image = [UIImage imageWithContentsOfFile:filePath];
         
         if (!image) {
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) {
+            if (UIDevice.currentDevice.systemVersion.floatValue >= 8.0f) {
                 // if no image, probably there is assets file, so use iOS8+ method to load image from "asset.car" file:
                 image = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
             }
@@ -57,7 +57,7 @@
 + (UIImage *)imageForPath:(NSString *)filePath scale:(CGFloat)scale {
     filePath = [filePath stringByAppendingString:[self suffixForScale:scale]];
     
-    NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
+    NSData *data = [NSFileManager.defaultManager contentsAtPath:filePath];
     UIImage *image = [UIImage imageWithData:data scale:scale];
     
     return image;
