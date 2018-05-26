@@ -10,26 +10,22 @@
 
 @implementation NSBundle (NFKResources)
 
-+ (NSBundle * _Nullable)resourcesForBundleWithName:(NSString * _Nonnull)firstTimeInvocationOnlyName {
-    if (!firstTimeInvocationOnlyName.length) {
-        NSLog(@"<nfktools> `resourcesForBundleWithName:` requires a bundle name on the first invocation.");
++ (NSBundle * _Nullable)resourcesForBundleWithName:(NSString * _Nonnull)name {
+    if (!name.length) {
+        NSLog(@"<nfktools> `resourcesForBundleWithName:` requires a bundle name.");
         return nil;
     }
     
-    static NSBundle *sharedNFKResources = nil;
-    static dispatch_once_t onceToken = 0;
+    NSURL *URL = [NSBundle.mainBundle URLForResource:name withExtension:@"bundle"];
+    NSBundle *resources = nil;
     
-    dispatch_once(&onceToken, ^{
-        NSURL *URL = [[NSBundle mainBundle] URLForResource:firstTimeInvocationOnlyName withExtension:@"bundle"];
-        
-        if (URL) {
-            sharedNFKResources = [NSBundle bundleWithURL:URL];
-        } else {
-            NSLog(@"<nfktools> bundle was not loaded, please ensure it is added to the project.");
-        }
-    });
+    if (URL) {
+        resources = [NSBundle bundleWithURL:URL];
+    } else {
+        NSLog(@"<nfktools> bundle was not loaded, please ensure it is added to the project.");
+    }
     
-    return sharedNFKResources;
+    return resources;
 }
 
 @end

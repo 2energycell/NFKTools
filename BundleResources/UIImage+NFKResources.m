@@ -12,14 +12,14 @@
 
 @implementation UIImage (NFKResources)
 
-+ (UIImage * _Nullable)resourcesImageNamed:(NSString * _Nonnull)name inResouces:(NSString * _Nonnull)firstTimeInvocationOnlyName {
++ (UIImage * _Nullable)imageNamed:(NSString * _Nonnull)imageName inResourcesWithName:(NSString * _Nonnull)resourcesName {
     // loading image directly from file (iOS8+ && without assets catalog):
-    NSBundle *bundle = [NSBundle resourcesForBundleWithName:firstTimeInvocationOnlyName];
+    NSBundle *bundle = [NSBundle resourcesForBundleWithName:resourcesName];
     NSString *filePath = nil;
     UIImage *image = nil;
     
-    if (bundle && name.length) {
-        filePath = [[bundle resourcePath] stringByAppendingPathComponent:name];
+    if (bundle && imageName.length) {
+        filePath = [[bundle resourcePath] stringByAppendingPathComponent:imageName];
     }
     
     if (filePath.length) {
@@ -28,7 +28,7 @@
         if (!image) {
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0f) {
                 // if no image, probably there is assets file, so use iOS8+ method to load image from "asset.car" file:
-                image = [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
+                image = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
             }
             
             if (!image) {

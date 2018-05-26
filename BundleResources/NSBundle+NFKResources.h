@@ -10,6 +10,6 @@
 
 @interface NSBundle (NFKResources)
 
-+ (NSBundle * _Nullable)resourcesForBundleWithName:(NSString * _Nonnull)firstTimeInvocationOnlyName;
++ (NSBundle * _Nullable)resourcesForBundleWithName:(NSString * _Nonnull)name;
 
 @end
