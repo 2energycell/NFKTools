@@ -23,5 +23,8 @@ A simple and effective networking client.
 ## UIImage+NFKResources
 The UIImage category that allows to get an image by name from bundle resources.
 
+## EffectiveReadability.xccolortheme
+The effective readability Xcode color theme.
+
 ## NFKSwipeView
 TBD
