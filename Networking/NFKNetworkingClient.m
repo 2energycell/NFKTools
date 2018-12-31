@@ -24,9 +24,16 @@
 
 @property (nonatomic, strong) dispatch_queue_t resultSyncQueue;
 
+#pragma mark - Readonly redefinition
+@property (atomic, strong, readwrite) NSURLRequest *originalRequest;
+
 @end
 
 @implementation NFKNetworkingClient {}
+
+#pragma mark - Statics
+
+static NSString * _Nonnull const kIAEscapeCharsForQueryStringValue = @"!*'();:@+$,/?%#[]<>&"; // URL query string value encoding escape chars;
 
 #pragma mark - Builder
 
@@ -58,7 +65,7 @@
 - (void)prepareRequest {
     if (self.URL && !self.currentTask) {
         // set Query params:
-        NSMutableString *URLWithQueryString = [NSMutableString stringWithString:self.URL.absoluteString];
+        NSMutableString *URLWithQueryString = [NSMutableString stringWithString:self.URL.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         __block NSInteger index = 0;
         
         if (self.queryParams.count) {
@@ -70,12 +77,14 @@
                 [URLWithQueryString appendString:@"&"];
             }
             
-            [URLWithQueryString appendString:[NSString stringWithFormat:@"%@=%@", key, obj]];
+            [URLWithQueryString appendString:[NSString stringWithFormat:@"%@=%@", key, [self.class escapeQueryStringValue:[NSString stringWithFormat:@"%@", obj]]]];
             ++index;
         }];
         
         NSMutableURLRequest *mutableRequest =
-        [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[URLWithQueryString stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet]]];
+        [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[URLWithQueryString]];
+         
+        self.originalRequest = mutableRequest;
         
         // set HTTP method:
         if (self.HTTPMethod.length) {
@@ -124,6 +133,15 @@
     self.responseHeaders = nil;
     self.responseStatusCode = 0;
 }
+         
+#pragma mark - Class API
+         
+ + (NSString * _Nullable)escapeQueryStringValue:(NSString * _Nonnull)queryStringVal {
+     NSString *queryStringRetVal =
+     (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)queryStringVal, NULL, (CFStringRef)kIAEscapeCharsForQueryStringValue, kCFStringEncodingUTF8));
+     
+     return queryStringRetVal;
+ }
 
 #pragma mark - NFKURLSessionManagerDelegate
 #pragma mark - NSURLSessionTaskDelegate

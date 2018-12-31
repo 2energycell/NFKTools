@@ -61,9 +61,13 @@
  */
 @interface NFKNetworkingClient : NSObject <NFKInterfaceBuilder, NFKNetworkingClientBuilder, NFKURLSessionManagerDelegate>
 
+@property (atomic, strong, readonly, nullable) NSURLRequest *originalRequest;
+
 + (instancetype _Nullable)build:(void(^ _Nonnull)(id<NFKNetworkingClientBuilder> _Nonnull builder))buildBlock;
 - (void)prepareRequest;
 - (void)startRequest;
 - (void)cancelRequest;
+
++ (NSString * _Nullable)escapeQueryStringValue:(NSString * _Nonnull)queryStringVal;
 
 @end

@@ -37,8 +37,8 @@
             }
             
             if (!image) {
-                // if there is no image with the correct scale, search for another:
-                NSUInteger scale = 3;
+                // if there is no image with a correct scale, search for another:
+                NSUInteger scale = UIScreen.mainScreen.scale + 1; // let's try with scale bigger by 1 than of the device;
                 
                 while ((scale > 0) && !image) {
                     if (scale != (NSUInteger)UIScreen.mainScreen.scale) { // do not check the correct scale, already checked;
