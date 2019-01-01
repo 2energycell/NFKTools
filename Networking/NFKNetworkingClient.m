@@ -65,7 +65,8 @@ static NSString * _Nonnull const kIAEscapeCharsForQueryStringValue = @"!*'();:@+
 - (void)prepareRequest {
     if (self.URL && !self.currentTask) {
         // set Query params:
-        NSMutableString *URLWithQueryString = [NSMutableString stringWithString:self.URL.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSMutableString *URLWithQueryString = [NSMutableString stringWithString:[self.URL.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
         __block NSInteger index = 0;
         
         if (self.queryParams.count) {
@@ -81,8 +82,7 @@ static NSString * _Nonnull const kIAEscapeCharsForQueryStringValue = @"!*'();:@+
             ++index;
         }];
         
-        NSMutableURLRequest *mutableRequest =
-        [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[URLWithQueryString]];
+        NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLWithQueryString]];
          
         self.originalRequest = mutableRequest;
         
